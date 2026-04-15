@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API = 'http://localhost:3000/api';
+const API = "http://localhost:3001/api";
 // const API = 'https://suxnix-server.vercel.app/api';
 
 const privateAPI = axios.create({
@@ -9,8 +9,8 @@ const privateAPI = axios.create({
 
 privateAPI.interceptors.request.use((config) => {
   // Check for admin token first, then user token
-  const adminToken = localStorage.getItem('admintestToken');
-  const userToken = localStorage.getItem('usertestToken');
+  const adminToken = localStorage.getItem("admintestToken");
+  const userToken = localStorage.getItem("usertestToken");
   const token = adminToken || userToken;
 
   if (token) {

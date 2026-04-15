@@ -110,7 +110,7 @@ const adminSlice = createSlice({
       .addCase(getAdminProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        localStorage.removeItem("admintestToken");
+        // localStorage.removeItem("admintestToken");
       });
   },
 });

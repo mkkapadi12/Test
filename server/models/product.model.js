@@ -16,11 +16,26 @@ const productSchema = new Schema(
       required: [true, "Admin Id is required"],
     },
 
-    images: [],
+    images: [
+      {
+        public_id: {
+          type: String,
+          required: true,
+        },
+        url: {
+          type: String,
+          required: true,
+        },
+        isPrimary: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
 
-    quantity: {
+    stock: {
       type: Number,
-      required: [true, "quantity is required"],
+      required: [true, "stock is required"],
     },
 
     discount: {

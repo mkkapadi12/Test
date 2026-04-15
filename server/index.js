@@ -8,6 +8,7 @@ const user_routes = require("./routes/user.routes");
 const admin_routes = require("./routes/admin.routes");
 const product_routes = require("./routes/product.routes");
 const errorMiddleware = require("./middlewares/error.middleware");
+const connectDB = require("./config/db");
 
 const port = process.env.PORT || 3001;
 
@@ -16,10 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
 //mongodb connection
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("MongoDB connected successfully!"))
-  .catch((err) => console.log(err));
+connectDB();
 
 app.use(
   cors({
