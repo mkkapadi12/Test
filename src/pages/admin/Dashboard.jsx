@@ -69,7 +69,6 @@ const Dashboard = () => {
       name: "",
       price: 0,
       stock: 0,
-      discount: 0,
       exp_date: "",
     },
   });
@@ -373,28 +372,6 @@ const Dashboard = () => {
                     </div>
                     <div className="space-y-2">
                       <Label
-                        htmlFor="discount"
-                        className="text-gray-700 font-medium text-sm"
-                      >
-                        Discount (%)
-                      </Label>
-                      <Input
-                        id="discount"
-                        type="number"
-                        placeholder="0"
-                        {...form.register("discount", {
-                          required: "Discount is required",
-                        })}
-                        className="border-gray-300 focus-visible:ring-gray-900"
-                      />
-                      {form.formState.errors.discount && (
-                        <p className="text-red-500 text-[10px] uppercase font-bold tracking-wider">
-                          {form.formState.errors.discount.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label
                         htmlFor="exp_date"
                         className="text-gray-700 font-medium text-sm"
                       >
@@ -522,13 +499,7 @@ const Dashboard = () => {
                         </span>
                       </TableCell>
                       <TableCell className="text-right">
-                        {product.discount > 0 ? (
-                          <span className="text-green-600 font-bold text-xs">
-                            {product.discount}% OFF
-                          </span>
-                        ) : (
-                          <span className="text-gray-400 text-xs">None</span>
-                        )}
+                        <span className="text-gray-400 text-xs">None</span>
                       </TableCell>
                       <TableCell className="text-right pr-6">
                         <Button

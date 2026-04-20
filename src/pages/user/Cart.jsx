@@ -11,12 +11,32 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(cart);
+  const totalCalculate = () => {
+    const subtotal = cart?.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
 
-  const Subtotal = cart?.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0,
-  );
+    const totalQuantity = cart?.reduce((acc, item) => acc + item.quantity, 0);
+
+    // Apply 10% discount if 5+ items
+    const discountPercentage = totalQuantity >= 5 ? 10 : 0;
+    const discountAmount = (subtotal * discountPercentage) / 100;
+    const total = subtotal - discountAmount;
+
+    return {
+      subtotal,
+      discountAmount,
+      total,
+      totalQuantity,
+      discountPercentage,
+    };
+  };
+
+  const { subtotal, discountAmount, total, totalQuantity, discountPercentage } =
+    totalCalculate();
+
+  console.log(cart);  
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
@@ -167,22 +187,37 @@ const Cart = () => {
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
                     <span className="text-green-600 font-medium">
-                      ${Subtotal}
+                      ${subtotal}
                     </span>
                   </div>
 
                   <div className="flex justify-between text-gray-600">
-                    <span>Total Items</span>
+                    <span>Total Quantity</span>
                     <span className="text-green-600 font-medium">
-                      {cart.length}
+                      {totalQuantity}
                     </span>
                   </div>
+
+                  {discountPercentage > 0 ? (
+                    <div className="flex justify-between text-green-600">
+                      <span>Discount ({discountPercentage}%)</span>
+                      <span>-${discountAmount}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between text-green-600">
+                      <span>Discount</span>
+                      <span className="text-sm text-gray-500">
+                        (add {5 - totalQuantity} more items for 10% discount)
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <Separator className="my-4" />
 
                 <div className="flex justify-between font-medium text-sm text-center w-full">
-                  <span className="text-center w-full">Discount applied in checkout</span>
+                  <span>Total</span>
+                  <span className="text-green-600 font-medium">${total}</span>
                 </div>
 
                 <Button

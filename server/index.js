@@ -7,6 +7,7 @@ const app = express();
 const user_routes = require("./routes/user.routes");
 const admin_routes = require("./routes/admin.routes");
 const product_routes = require("./routes/product.routes");
+const order_routes = require("./routes/order.routes");
 const errorMiddleware = require("./middlewares/error.middleware");
 const connectDB = require("./config/db");
 
@@ -38,6 +39,7 @@ app.get("/api", (req, res) => {
 app.use("/api/user", user_routes);
 app.use("/api/admin", admin_routes);
 app.use("/api/product", product_routes);
+app.use("/api/order", order_routes);
 
 //error middleware
 app.use(errorMiddleware);

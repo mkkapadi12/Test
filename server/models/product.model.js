@@ -38,11 +38,6 @@ const productSchema = new Schema(
       required: [true, "stock is required"],
     },
 
-    discount: {
-      type: Number,
-      default: 0,
-    },
-
     price: {
       type: Number,
       required: [true, "product price is required"],
