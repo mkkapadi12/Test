@@ -8,10 +8,14 @@ const {
   getMyEnrollments,
   getPendingRequests,
   approveOrReject,
+  getAllEnrollments,
 } = require("../controllers/enrollment.controller");
 
 //student request enrollment
 router.post("/request", authMiddleware, requestEnrollment);
+
+//get all enrollments
+router.get("/all", adminMiddleware, getAllEnrollments);
 
 //get my enrollments
 router.get("/", authMiddleware, getMyEnrollments);

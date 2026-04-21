@@ -20,8 +20,9 @@ import StudentLayout from "./pages/layout/StudentLayout";
 import AdminCourses from "./pages/admin/pages/AdminCourses";
 import AdminProducts from "./pages/admin/pages/AdminProducts";
 import AdminLayout from "./pages/layout/AdminLayout";
-import StudentEnrollments from "./pages/admin/pages/StudentEnrollments";
 import MyEnrollments from "./pages/student/pages/MyEnrollments";
+import PendingRequests from "./pages/admin/pages/PendingRequests";
+import AdminEnrollments from "./pages/admin/pages/AdminEnrollments";
 
 const App = () => {
   return (
@@ -41,7 +42,8 @@ const App = () => {
           <Route index element={<AdminDashboard />} />
           <Route path="all-products" element={<AdminProducts />} />
           <Route path="all-courses" element={<AdminCourses />} />
-          <Route path="student-enrollments" element={<StudentEnrollments />} />
+          <Route path="pending-requests" element={<PendingRequests />} />
+          <Route path="enrollments" element={<AdminEnrollments />} />
         </Route>
         {/* student routes */}
         <Route path="/student" element={<StudentLayout />}>

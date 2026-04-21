@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 const AllCourses = () => {
   const { courses, loading } = useSelector((state) => state.course);
-  const { enrollments } = useSelector((state) => state.enrollment);
+  const { studentEnrollments } = useSelector((state) => state.enrollment);
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -113,7 +113,7 @@ const AllCourses = () => {
                 </CardDescription>
               </CardHeader>
               <CardFooter className="p-5 pt-0 mt-auto">
-                {enrollments?.some(
+                {studentEnrollments?.some(
                   (enrollment) => enrollment?.course?._id === course?._id,
                 ) ? (
                   <Button

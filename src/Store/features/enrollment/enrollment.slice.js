@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { enrollmentAPI } from "./enrollment.api";
 
 const initialState = {
-  enrollments: [],
-  adminEnrollments: [],
+  studentEnrollments: [],
+  pendingRequests: [],
+  allEnrollments: [],
   loading: false,
   error: null,
 };
@@ -14,6 +15,20 @@ export const enroll = createAsyncThunk(
     try {
       const response = await enrollmentAPI.enroll(courseId);
       dispatch(getMyEnrollments());
+      return response;
+    } catch (error) {
+      return rejectWithValue(
+        error.response.data.message || "something went wrong",
+      );
+    }
+  },
+);
+
+export const getAllEnrollments = createAsyncThunk(
+  "enrollment/getAllEnrollments",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await enrollmentAPI.getAllEnrollments();
       return response;
     } catch (error) {
       return rejectWithValue(
@@ -85,9 +100,21 @@ const enrollmentSlice = createSlice({
       })
       .addCase(enroll.fulfilled, (state, action) => {
         state.loading = false;
-        state.enrollments.push(action.payload);
+        state.studentEnrollments.push(action.payload);
+        state.allEnrollments.push(action.payload);
       })
       .addCase(enroll.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllEnrollments.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllEnrollments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allEnrollments = action.payload.enrollments;
+      })
+      .addCase(getAllEnrollments.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -96,7 +123,7 @@ const enrollmentSlice = createSlice({
       })
       .addCase(getMyEnrollments.fulfilled, (state, action) => {
         state.loading = false;
-        state.enrollments = action.payload.enrollments;
+        state.studentEnrollments = action.payload.enrollments;
       })
       .addCase(getMyEnrollments.rejected, (state, action) => {
         state.loading = false;
@@ -107,7 +134,7 @@ const enrollmentSlice = createSlice({
       })
       .addCase(getPendingRequests.fulfilled, (state, action) => {
         state.loading = false;
-        state.adminEnrollments = action.payload.enrollments;
+        state.pendingRequests = action.payload.enrollments;
       })
       .addCase(getPendingRequests.rejected, (state, action) => {
         state.loading = false;
@@ -118,9 +145,10 @@ const enrollmentSlice = createSlice({
       })
       .addCase(approveOrReject.fulfilled, (state, action) => {
         state.loading = false;
-        state.adminEnrollments = state.adminEnrollments.filter(
+        state.pendingRequests = state.pendingRequests.filter(
           (enrollment) => enrollment._id !== action.payload._id,
         );
+        state.studentEnrollments.push(action.payload);
       })
       .addCase(approveOrReject.rejected, (state, action) => {
         state.loading = false;

@@ -38,6 +38,13 @@ const updateEnrollmentStatus = async (
   return await enrollment.save();
 };
 
+const getAllEnrollments = async () => {
+  return await ENROLLMENT.find()
+    .populate("student", "name email")
+    .populate("course", "title")
+    .sort({ createdAt: -1 });
+};
+
 const getEnrollmentsByStudent = async (studentId) => {
   return await ENROLLMENT.find({ student: studentId })
     .populate("course", "title description instructor duration")
@@ -53,6 +60,7 @@ const getPendingEnrollments = async () => {
 
 module.exports = {
   requestEnrollment,
+  getAllEnrollments,
   updateEnrollmentStatus,
   getEnrollmentsByStudent,
   getPendingEnrollments,

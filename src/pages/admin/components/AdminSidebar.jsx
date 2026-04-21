@@ -24,12 +24,12 @@ const AdminSidebar = () => {
     },
     {
       title: "Enrollments Requests",
-      path: "/admin/student-enrollments",
+      path: "/admin/pending-requests",
       icon: <User className="w-5 h-5" />,
     },
     {
-      title: "All Students",
-      path: "/admin/all-students",
+      title: "All Enrollments",
+      path: "/admin/enrollments",
       icon: <Users className="w-5 h-5" />,
     },
   ];

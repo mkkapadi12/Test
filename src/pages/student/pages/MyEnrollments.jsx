@@ -38,7 +38,7 @@ const StatusBadge = ({ status }) => {
 
 const MyEnrollments = () => {
   const dispatch = useDispatch();
-  const { enrollments, loading } = useSelector((state) => state.enrollment);
+  const { studentEnrollments, loading } = useSelector((state) => state.enrollment);
 
   useEffect(() => {
     dispatch(getMyEnrollments());
@@ -72,9 +72,9 @@ const MyEnrollments = () => {
             </Card>
           ))}
         </div>
-      ) : enrollments?.length > 0 ? (
+      ) : studentEnrollments?.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {enrollments.map((enrollment) => (
+          {studentEnrollments.map((enrollment) => (
             <Card key={enrollment._id} className="flex flex-col overflow-hidden transition-all hover:shadow-md border-border/50 bg-card/50 backdrop-blur-sm">
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between gap-4">

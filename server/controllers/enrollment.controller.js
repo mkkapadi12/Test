@@ -39,6 +39,11 @@ const approveOrReject = asyncHandler(async (req, res) => {
   return res.status(200).json({ msg: `Enrollment ${status}`, enrollment });
 });
 
+const getAllEnrollments = asyncHandler(async (req, res) => {
+  const enrollments = await enrollmentService.getAllEnrollments();
+  return res.status(200).json({ enrollments });
+});
+
 const getMyEnrollments = asyncHandler(async (req, res) => {
   const enrollments = await enrollmentService.getEnrollmentsByStudent(
     req.user._id,
@@ -53,6 +58,7 @@ const getPendingRequests = asyncHandler(async (req, res) => {
 
 module.exports = {
   requestEnrollment,
+  getAllEnrollments,
   approveOrReject,
   getMyEnrollments,
   getPendingRequests,

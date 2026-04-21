@@ -5,6 +5,12 @@ export const enrollmentAPI = {
     const response = await privateAPI.post(`/enrollments/request`, { courseId });
     return response.data;
   },
+
+  getAllEnrollments: async () => {
+    const response = await privateAPI.get(`/enrollments/all`);
+    return response.data;
+  },
+
   getMyEnrollments: async () => {
     const response = await privateAPI.get(`/enrollments/`);
     return response.data;

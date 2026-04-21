@@ -18,33 +18,44 @@ import {
   approveOrReject,
 } from "@/Store/features/enrollment/enrollment.slice";
 
-const StudentEnrollments = () => {
+const PendingRequests = () => {
   const dispatch = useDispatch();
-  const { adminEnrollments, loading } = useSelector((state) => state.enrollment) || { adminEnrollments: [], loading: false };
+  const { pendingRequests, loading } = useSelector(
+    (state) => state.enrollment,
+  ) || { pendingRequests: [], loading: false };
 
   useEffect(() => {
     dispatch(getPendingRequests());
   }, [dispatch]);
 
   const handleAction = async (enrollmentId, status) => {
-    const toastId = toast.loading(`${status === 'approved' ? 'Approving' : 'Rejecting'} enrollment...`);
+    const toastId = toast.loading(
+      `${status === "approved" ? "Approving" : "Rejecting"} enrollment...`,
+    );
     try {
       const resultAction = await dispatch(
         approveOrReject({
           enrollmentId,
           status,
-          rejectionReason: status === "rejected" ? "Requirements not met." : undefined,
-        })
+          rejectionReason:
+            status === "rejected" ? "Requirements not met." : undefined,
+        }),
       ).unwrap();
-      
-      toast.success(resultAction?.msg || `Enrollment request ${status}.`, { id: toastId });
+
+      toast.success(resultAction?.msg || `Enrollment request ${status}.`, {
+        id: toastId,
+      });
     } catch (error) {
-      toast.error(typeof error === "string" ? error : "Operation failed", { id: toastId });
+      toast.error(typeof error === "string" ? error : "Operation failed", {
+        id: toastId,
+      });
     }
   };
 
-  if (loading && !adminEnrollments?.length) {
-    return <div className="p-8 text-gray-500">Loading enrollment requests...</div>;
+  if (loading && !pendingRequests?.length) {
+    return (
+      <div className="p-8 text-gray-500">Loading enrollment requests...</div>
+    );
   }
 
   return (
@@ -83,8 +94,8 @@ const StudentEnrollments = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminEnrollments?.length > 0 ? (
-                adminEnrollments.map((enrollment) => (
+              {pendingRequests?.length > 0 ? (
+                pendingRequests.map((enrollment) => (
                   <TableRow
                     key={enrollment._id}
                     className="group hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0"
@@ -154,4 +165,4 @@ const StudentEnrollments = () => {
   );
 };
 
-export default StudentEnrollments;
+export default PendingRequests;
