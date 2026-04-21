@@ -35,7 +35,6 @@ export const loginAdmin = createAsyncThunk(
   async (data, { rejectWithValue, dispatch }) => {
     try {
       const result = await loginAdminAPI(data);
-      console.log(result);
       localStorage.setItem("admintestToken", result.token);
 
       await dispatch(getAdminProfile());

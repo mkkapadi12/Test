@@ -1,15 +1,25 @@
 require("dotenv").config({ quiet: true });
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const http = require("http");
+const { initSocket } = require("./socket/socket");
 const app = express();
 
+// routes
 const user_routes = require("./routes/user.routes");
 const admin_routes = require("./routes/admin.routes");
 const product_routes = require("./routes/product.routes");
 const order_routes = require("./routes/order.routes");
+const course_routes = require("./routes/course.routes");
+const enrollment_routes = require("./routes/enrollment.routes");
+// middleware
 const errorMiddleware = require("./middlewares/error.middleware");
+
+// database connection
 const connectDB = require("./config/db");
+
+const server = http.createServer(app);
+initSocket(server);
 
 const port = process.env.PORT || 3001;
 
@@ -41,9 +51,13 @@ app.use("/api/admin", admin_routes);
 app.use("/api/product", product_routes);
 app.use("/api/order", order_routes);
 
+//course + enrollment
+app.use("/api/courses", course_routes);
+app.use("/api/enrollments", enrollment_routes);
+
 //error middleware
 app.use(errorMiddleware);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}!`);
 });

@@ -1,31 +1,52 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+
+//admin routes
 import AdminLogin from "./pages/admin/Auth/AdminLogin";
 import AdminRegister from "./pages/admin/Auth/AdminRegister";
+import AdminDashboard from "./pages/admin/pages/AdminDashboard";
 
-import Dashboard from "./pages/admin/Dashboard";
+//user routes
 import UserLogin from "./pages/user/UserLogin";
 import UserRegister from "./pages/user/UserRegister";
-import UserDashboard from "./pages/user/UserDashboard";
 import Cart from "./pages/user/Cart";
 import Checkout from "./pages/user/Checkout";
+
+//student routes
+import StudentDashboard from "./pages/student/pages/StudentDashboard";
+import AllCourses from "./pages/student/pages/AllCourses";
+import StudentLayout from "./pages/layout/StudentLayout";
+import AdminCourses from "./pages/admin/pages/AdminCourses";
+import AdminProducts from "./pages/admin/pages/AdminProducts";
+import AdminLayout from "./pages/layout/AdminLayout";
+import StudentEnrollments from "./pages/admin/pages/StudentEnrollments";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        //User auth routes
+        {/* user auth routes */}
         <Route path="/user/login" element={<UserLogin />} />
         <Route path="/user/register" element={<UserRegister />} />
-        <Route path="/user/dashboard" element={<UserDashboard />} />
         <Route path="/user/cart" element={<Cart />} />
         <Route path="/user/checkout" element={<Checkout />} />
-        //admin auth routes
+        {/* admin auth routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/register" element={<AdminRegister />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        {/* admin routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="all-products" element={<AdminProducts />} />
+          <Route path="all-courses" element={<AdminCourses />} />
+          <Route path="student-enrollments" element={<StudentEnrollments />} />
+        </Route>
+        {/* student routes */}
+        <Route path="/student" element={<StudentLayout />}>
+          <Route index element={<StudentDashboard />} />
+          <Route path="all-courses" element={<AllCourses />} />
+        </Route>
       </Routes>
     </Router>
   );
