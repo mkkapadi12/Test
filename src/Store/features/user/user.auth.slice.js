@@ -109,7 +109,7 @@ const userSlice = createSlice({
       .addCase(getUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        localStorage.removeItem("usertestToken");
+        // localStorage.removeItem("usertestToken");
       });
   },
 });

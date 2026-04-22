@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Plus, Trash2, BookOpen, Upload } from "lucide-react";
+import { Plus, Trash2, BookOpen, Upload, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,12 +28,15 @@ import { Input } from "@/components/ui/input";
 import {
   createCourse,
   deleteCourse,
+  getAdminAllCourses,
   getAllCourses,
+  updateCourseStatus,
 } from "@/Store/features/course/course.slice";
+import { Switch } from "@/components/ui/switch";
 
 const AdminCourses = () => {
-  const { courses, loading } = useSelector((state) => state.course) || {
-    courses: [],
+  const { admincourses, loading } = useSelector((state) => state.course) || {
+    admincourses: [],
     loading: false,
   };
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,10 +55,6 @@ const AdminCourses = () => {
   });
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllCourses());
-  }, [dispatch]);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -101,6 +100,20 @@ const AdminCourses = () => {
     }
   };
 
+  const handleUpdateStatus = async (id, isActive) => {
+    const toastId = toast.loading("Updating course status...");
+    try {
+      await dispatch(updateCourseStatus({ id, isActive })).unwrap();
+      toast.success("Course status updated successfully!", { id: toastId });
+      dispatch(getAdminAllCourses());
+    } catch (error) {
+      toast.error(
+        typeof error === "string" ? error : error?.message || "Update failed",
+        { id: toastId },
+      );
+    }
+  };
+
   const handleDelete = async (id) => {
     const toastId = toast.loading("Deleting course...");
     try {
@@ -113,6 +126,10 @@ const AdminCourses = () => {
       );
     }
   };
+
+  useEffect(() => {
+    dispatch(getAdminAllCourses());
+  }, [dispatch]);
 
   if (loading) {
     return <div className="p-8 text-gray-500">Loading courses...</div>;
@@ -309,14 +326,17 @@ const AdminCourses = () => {
                 <TableHead className="text-right text-gray-600 font-bold uppercase text-[10px] tracking-wider py-4">
                   Price
                 </TableHead>
-                <TableHead className="text-right text-gray-600 font-bold uppercase text-[10px] tracking-wider py-4 pr-6">
+                <TableHead className="text-center text-gray-600 font-bold uppercase text-[10px] tracking-wider py-4">
+                  Status
+                </TableHead>
+                <TableHead className="text-center text-gray-600 font-bold uppercase text-[10px] tracking-wider py-4">
                   Actions
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {courses?.length > 0 ? (
-                courses.map((course) => (
+              {admincourses?.length > 0 ? (
+                admincourses.map((course) => (
                   <TableRow
                     key={course._id}
                     className="group hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0"
@@ -353,7 +373,15 @@ const AdminCourses = () => {
                         ? `$${course.price.toFixed(2)}`
                         : "Free"}
                     </TableCell>
-                    <TableCell className="text-right pr-6">
+                    <TableCell className="text-center">
+                      <Switch
+                        checked={course.isActive}
+                        onCheckedChange={(newValue) =>
+                          handleUpdateStatus(course._id, newValue)
+                        }
+                      />
+                    </TableCell>
+                    <TableCell className="text-center">
                       <Button
                         variant="ghost"
                         size="icon-sm"

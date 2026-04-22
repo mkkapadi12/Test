@@ -34,6 +34,13 @@ const StudentLayout = () => {
       dispatch(getAllCourses()); // refresh course list automatically
     });
 
+    //Listen: course status updated
+    socket.on("courseUpdate", (data) => {
+      toast.success(data.message || "A course status has been updated!");
+      dispatch(getAllCourses()); // refresh course list automatically
+      dispatch(getMyEnrollments());//refresh enrollment list automatically
+    });
+
     // Listen: admin approved or rejected enrollment
     socket.on("enrollmentUpdated", (data) => {
       if (data.status === "approved") {

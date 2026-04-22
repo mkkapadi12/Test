@@ -9,36 +9,15 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { BookOpen, Clock, CheckCircle, XCircle, Calendar, GraduationCap } from "lucide-react";
-
-const StatusIcon = ({ status }) => {
-  switch (status?.toLowerCase()) {
-    case "approved":
-      return <CheckCircle className="w-4 h-4 text-green-500" />;
-    case "rejected":
-      return <XCircle className="w-4 h-4 text-red-500" />;
-    case "pending":
-    default:
-      return <Clock className="w-4 h-4 text-yellow-500" />;
-  }
-};
-
-const StatusBadge = ({ status }) => {
-  switch (status?.toLowerCase()) {
-    case "approved":
-      return <Badge variant="outline" className="border-green-200 text-green-700 bg-green-50 dark:bg-green-900/30 dark:border-green-800 dark:text-green-400">Approved</Badge>;
-    case "rejected":
-      return <Badge variant="destructive">Rejected</Badge>;
-    case "pending":
-    default:
-      return <Badge variant="outline" className="border-yellow-200 text-yellow-700 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-400">Pending</Badge>;
-  }
-};
+import { BookOpen, Calendar, GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { StatusBadge, StatusIcon } from "@/helper";
 
 const MyEnrollments = () => {
   const dispatch = useDispatch();
-  const { studentEnrollments, loading } = useSelector((state) => state.enrollment);
+  const { studentEnrollments, loading } = useSelector(
+    (state) => state.enrollment,
+  );
 
   useEffect(() => {
     dispatch(getMyEnrollments());
@@ -51,7 +30,9 @@ const MyEnrollments = () => {
           <GraduationCap className="h-8 w-8 text-primary" />
           My Enrollments
         </h1>
-        <p className="text-muted-foreground">View and track the status of your course enrollments.</p>
+        <p className="text-muted-foreground">
+          View and track the status of your course enrollments.
+        </p>
       </div>
 
       {loading ? (
@@ -75,38 +56,59 @@ const MyEnrollments = () => {
       ) : studentEnrollments?.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {studentEnrollments.map((enrollment) => (
-            <Card key={enrollment._id} className="flex flex-col overflow-hidden transition-all hover:shadow-md border-border/50 bg-card/50 backdrop-blur-sm">
+            <Card
+              key={enrollment._id}
+              className="flex flex-col overflow-hidden transition-all hover:shadow-md border-border/50 bg-card/50 backdrop-blur-sm"
+            >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1.5 w-full">
-                    <CardTitle className="line-clamp-2 leading-tight text-lg" title={enrollment.course?.title}>
+                    <CardTitle
+                      className="line-clamp-2 leading-tight text-lg"
+                      title={enrollment.course?.title}
+                    >
                       {enrollment.course?.title || "Unknown Course"}
                     </CardTitle>
                     <CardDescription className="flex items-center gap-1.5 mt-2">
                       <Calendar className="w-3.5 h-3.5" />
-                      {new Date(enrollment.createdAt).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
+                      {new Date(enrollment.createdAt).toLocaleDateString(
+                        undefined,
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        },
+                      )}
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="flex-1 pb-4">
-                {enrollment.rejectionReason && enrollment.status === "rejected" ? (
-                  <div className="bg-destructive/10 border border-destructive/20 text-destructive text-sm p-3 rounded-md">
-                    <span className="font-semibold block mb-1">Reason for rejection:</span> 
-                    {enrollment.rejectionReason}
-                  </div>
-                ) : (
+              <CardContent className="flex-1 pb-4 flex items-center justify-center">
+                {enrollment.rejectionReason &&
+                  enrollment.status === "rejected" && (
+                    <div className="bg-destructive/10 border border-destructive/20 text-destructive text-sm p-3 rounded-md">
+                      <span className="font-semibold block mb-1">
+                        Reason for rejection:
+                      </span>
+                      {enrollment.rejectionReason}
+                    </div>
+                  )}
+                {enrollment.status === "pending" && (
                   <div className="text-sm text-muted-foreground flex items-center gap-2">
-                     <GraduationCap className="w-4 h-4 opacity-50" />
-                     Course enrollment request
+                    <GraduationCap className="w-4 h-4 opacity-50" />
+                    Course enrollment request
+                  </div>
+                )}
+                {enrollment.status === "approved" && (
+                  <div className="text-sm text-muted-foreground flex items-center gap-2 justify-center">
+                    <Button className="bg-gray-900 text-white hover:bg-gray-800 font-semibold h-10 px-6">
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Start Learning
+                    </Button>
                   </div>
                 )}
               </CardContent>
-              <CardFooter className="pt-4 border-t border-border/50 bg-muted/20 flex justify-between items-center">
+              <CardFooter className="pt-4 border-t border-border/50 bg-muted/20">
                 <div className="flex items-center gap-2">
                   <StatusIcon status={enrollment.status} />
                   <span className="text-sm font-medium capitalize text-muted-foreground">
@@ -125,7 +127,8 @@ const MyEnrollments = () => {
           </div>
           <CardTitle className="mb-2 text-xl">No Enrollments Yet</CardTitle>
           <CardDescription className="max-w-sm text-base">
-            You haven't requested enrollment in any courses yet. Browse available courses to start learning!
+            You haven't requested enrollment in any courses yet. Browse
+            available courses to start learning!
           </CardDescription>
         </Card>
       )}

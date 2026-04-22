@@ -5,16 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Award, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { getMyEnrollments } from "@/Store/features/enrollment/enrollment.slice";
 
 const StudentDashboard = () => {
   const { user } = useSelector((state) => state.user);
+  const { studentEnrollments } = useSelector(
+    (state) => state.enrollment,
+  );
   const dispatch = useDispatch();
+
+  const approvedEnrollments = studentEnrollments.filter(
+    (enrollment) => enrollment.status === "approved",
+  );
 
   useEffect(() => {
     dispatch(getUserProfile());
+    dispatch(getMyEnrollments());
   }, [dispatch]);
-
-  console.log(user);
 
   return (
     <div className="space-y-8 max-w-5xl">
@@ -30,18 +37,24 @@ const StudentDashboard = () => {
       <div className="grid gap-6 md:grid-cols-2">
         <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-lg font-bold text-gray-900">Enrolled Courses</CardTitle>
+            <CardTitle className="text-lg font-bold text-gray-900">
+              Enrolled Courses
+            </CardTitle>
             <BookOpen className="h-5 w-5 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-extrabold text-gray-900">0</div>
+            <div className="text-3xl font-extrabold text-gray-900">
+              {approvedEnrollments.length}
+            </div>
             <p className="text-sm text-gray-500 mt-1">Active learning paths</p>
           </CardContent>
         </Card>
 
         <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-lg font-bold text-gray-900">Completed Courses</CardTitle>
+            <CardTitle className="text-lg font-bold text-gray-900">
+              Completed Courses
+            </CardTitle>
             <Award className="h-5 w-5 text-gray-400" />
           </CardHeader>
           <CardContent>
@@ -53,7 +66,9 @@ const StudentDashboard = () => {
 
       <div className="mt-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">Recent Activity</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+            Recent Activity
+          </h2>
           <Link to="/student/all-courses">
             <Button variant="outline" className="text-sm font-medium">
               Browse Courses
@@ -66,9 +81,12 @@ const StudentDashboard = () => {
             <div className="h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
               <BookOpen className="h-8 w-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">No active courses</h3>
+            <h3 className="text-lg font-bold text-gray-900">
+              No active courses
+            </h3>
             <p className="text-gray-500 max-w-sm mt-2 mb-6">
-              You haven't enrolled in any courses yet. Start exploring our catalog to begin learning.
+              You haven't enrolled in any courses yet. Start exploring our
+              catalog to begin learning.
             </p>
             <Link to="/student/all-courses">
               <Button className="bg-gray-900 text-white hover:bg-gray-800 font-medium px-6">

@@ -22,6 +22,11 @@ const StudentSidebar = () => {
       path: "/student/my-enrollments",
       icon: <GraduationCap className="w-5 h-5" />,
     },
+    {
+      title: "My Learning",
+      path: "/student/learning",
+      icon: <BookOpen className="w-5 h-5" />,
+    },
   ];
 
   return (

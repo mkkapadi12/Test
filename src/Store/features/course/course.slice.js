@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { courseAPI } from "./course.api";
 
 const initialState = {
+  admincourses: [],
   courses: [],
   loading: false,
   error: null,
@@ -10,7 +11,6 @@ const initialState = {
 export const createCourse = createAsyncThunk(
   "course/createCourse",
   async (course, { rejectWithValue }) => {
-    console.log("slice:",course);
     try {
       const response = await courseAPI.createCourse(course);
       return response;
@@ -20,11 +20,49 @@ export const createCourse = createAsyncThunk(
   },
 );
 
+//get all course for admin
+export const getAdminAllCourses = createAsyncThunk(
+  "course/getAdminAllCourses",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await courseAPI.getAdminAllCourses();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+//get all course for student
 export const getAllCourses = createAsyncThunk(
   "course/getAllCourses",
   async (_, { rejectWithValue }) => {
     try {
       const response = await courseAPI.getAllCourses();
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const updateCourse = createAsyncThunk(
+  "course/updateCourse",
+  async ({ id, course }, { rejectWithValue }) => {
+    try {
+      const response = await courseAPI.updateCourse(id, course);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const updateCourseStatus = createAsyncThunk(
+  "course/updateCourseStatus",
+  async ({ id, isActive }, { rejectWithValue }) => {
+    try {
+      const response = await courseAPI.updateCourseStatus(id, isActive);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -82,6 +120,37 @@ const courseSlice = createSlice({
         );
       })
       .addCase(deleteCourse.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAdminAllCourses.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAdminAllCourses.fulfilled, (state, action) => {
+        state.loading = false;
+        state.admincourses = action.payload.courses;
+      })
+      .addCase(getAdminAllCourses.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateCourse.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCourse.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateCourse.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateCourseStatus.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCourseStatus.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateCourseStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

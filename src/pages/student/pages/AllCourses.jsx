@@ -84,7 +84,7 @@ const AllCourses = () => {
           {filteredCourses.map((course) => (
             <Card
               key={course._id}
-              className="flex flex-col overflow-hidden bg-white border-gray-200 shadow-sm hover:shadow-md transition-all group"
+              className="flex flex-col overflow-hidden bg-white border-gray-200 shadow-sm hover:shadow-md transition-all group py-0"
             >
               <div className="aspect-video bg-gray-100 relative overflow-hidden">
                 <img
@@ -111,8 +111,22 @@ const AllCourses = () => {
                 <CardDescription className="line-clamp-2 text-gray-500">
                   {course.description || "No description provided."}
                 </CardDescription>
+                {studentEnrollments.some(
+                  (enrollment) =>
+                    enrollment?.course?._id === course?._id &&
+                    enrollment.status === "rejected",
+                ) && (
+                  <span className="text-red-500 font-bold mt-4">
+                    Rejected :{" "}
+                    {studentEnrollments?.find(
+                      (enrollment) =>
+                        enrollment?.course?._id === course?._id &&
+                        enrollment.status === "rejected",
+                    )?.rejectionReason || "Rejected"}
+                  </span>
+                )}
               </CardHeader>
-              <CardFooter className="p-5 pt-0 mt-auto">
+              <CardFooter className="p-5 pt-0 mt-auto flex flex-col">
                 {studentEnrollments?.some(
                   (enrollment) => enrollment?.course?._id === course?._id,
                 ) ? (

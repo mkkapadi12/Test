@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const ENROLLMENT = require("../models/enrollment.model");
 
 const requestEnrollment = async (studentId, courseId) => {
@@ -7,15 +8,29 @@ const requestEnrollment = async (studentId, courseId) => {
   });
 
   if (existing) {
-    const error = new Error("Enrollment request already exists");
-    error.statusCode = 409;
-    throw error;
+    if (existing.status === "approved") {
+      const error = new Error("You are already enrolled in this course");
+      error.statusCode = 409;
+      throw error;
+    }
+    if (existing.status === "pending") {
+      const error = new Error("Enrollment request already exists");
+      error.statusCode = 409;
+      throw error;
+    }
+    if (existing.status === "rejected") {
+      const error = new Error("Enrollment request already rejected");
+      error.statusCode = 409;
+      throw error;
+    }
   }
 
-  return await ENROLLMENT.create({
+  const enrollment = await ENROLLMENT.create({
     student: studentId,
     course: courseId,
   });
+
+  return await enrollment.populate("course", "title");
 };
 
 const updateEnrollmentStatus = async (
@@ -46,9 +61,42 @@ const getAllEnrollments = async () => {
 };
 
 const getEnrollmentsByStudent = async (studentId) => {
-  return await ENROLLMENT.find({ student: studentId })
-    .populate("course", "title description instructor duration")
-    .sort({ createdAt: -1 });
+  return await ENROLLMENT.aggregate([
+    {
+      $match: { student: new mongoose.Types.ObjectId(studentId) },
+    },
+    {
+      $lookup: {
+        from: "courses", // MongoDB collection name (lowercase + plural)
+        localField: "course",
+        foreignField: "_id",
+        as: "course",
+      },
+    },
+    {
+      $unwind: "$course", // flatten the course array
+    },
+    {
+      $match: { "course.isActive": true }, // now filter on course field
+    },
+    {
+      $project: {
+        status: 1,
+        enrolledAt: 1,
+        approvedAt: 1,
+        rejectionReason: 1,
+        createdAt: 1,
+        "course.title": 1,
+        "course.description": 1,
+        "course.instructor": 1,
+        "course.duration": 1,
+        "course._id":1
+      },
+    },
+    {
+      $sort: { createdAt: -1 },
+    },
+  ]);
 };
 
 const getPendingEnrollments = async () => {
