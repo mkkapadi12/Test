@@ -5,10 +5,13 @@ import App from "./App.jsx";
 import { Provider } from "react-redux";
 import { store } from "./Store/store";
 import { Toaster } from "./components/ui/sonner";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <App />
+    <TooltipProvider>
+      <App />
+    </TooltipProvider>
     <Toaster position="bottom-right" />
   </Provider>,
 );

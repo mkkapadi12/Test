@@ -1,57 +1,102 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, BookOpen, GraduationCap } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  LayoutDashboard,
+  BookOpen,
+  GraduationCap,
+  Brain,
+} from "lucide-react";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+
+const navItems = [
+  {
+    title: "Dashboard",
+    path: "/student",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "All Courses",
+    path: "/student/all-courses",
+    icon: BookOpen,
+  },
+  {
+    title: "My Enrollments",
+    path: "/student/my-enrollments",
+    icon: GraduationCap,
+  },
+  {
+    title: "My Learning",
+    path: "/student/learning",
+    icon: Brain,
+  },
+];
 
 const StudentSidebar = () => {
   const location = useLocation();
 
-  const navItems = [
-    {
-      title: "Dashboard",
-      path: "/student",
-      icon: <LayoutDashboard className="w-5 h-5" />,
-    },
-    {
-      title: "All Courses",
-      path: "/student/all-courses",
-      icon: <BookOpen className="w-5 h-5" />,
-    },
-    {
-      title: "My Enrollments",
-      path: "/student/my-enrollments",
-      icon: <GraduationCap className="w-5 h-5" />,
-    },
-    {
-      title: "My Learning",
-      path: "/student/learning",
-      icon: <BookOpen className="w-5 h-5" />,
-    },
-  ];
-
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 h-[calc(100vh-4rem)] hidden md:block sticky top-16">
-      <div className="p-4 space-y-2 py-6">
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-gray-100 text-gray-900"
-                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50",
-              )}
-            >
-              {item.icon}
-              {item.title}
-            </Link>
-          );
-        })}
-      </div>
-    </aside>
+    <Sidebar collapsible="icon">
+      {/* Brand header visible inside sidebar */}
+      <SidebarHeader>
+        <div className="flex items-center gap-2 px-2 py-1">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-900">
+            <GraduationCap className="h-4 w-4 text-white" />
+          </div>
+          <span className="font-bold text-base tracking-tight text-gray-900 group-data-[collapsible=icon]:hidden">
+            StudentPortal
+          </span>
+        </div>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <SidebarMenuItem key={item.path}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                      size="lg"
+                    >
+                      <Link to={item.path}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter>
+        <div className="px-2 py-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+          © {new Date().getFullYear()} StudentPortal
+        </div>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </Sidebar>
   );
 };
 

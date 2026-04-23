@@ -8,6 +8,7 @@ import { getAllCourses } from "@/Store/features/course/course.slice";
 import socket from "@/socket/socket";
 import { toast } from "sonner";
 import { getMyEnrollments } from "@/Store/features/enrollment/enrollment.slice";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
 const StudentLayout = () => {
   const { user } = useSelector((state) => state.user);
@@ -38,7 +39,7 @@ const StudentLayout = () => {
     socket.on("courseUpdate", (data) => {
       toast.success(data.message || "A course status has been updated!");
       dispatch(getAllCourses()); // refresh course list automatically
-      dispatch(getMyEnrollments());//refresh enrollment list automatically
+      dispatch(getMyEnrollments()); //refresh enrollment list automatically
     });
 
     // Listen: admin approved or rejected enrollment
@@ -52,7 +53,6 @@ const StudentLayout = () => {
         );
         dispatch(getMyEnrollments());
       }
-      // Optionally refresh enrollments
     });
 
     return () => {
@@ -62,15 +62,15 @@ const StudentLayout = () => {
   }, [user?._id, dispatch]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans">
-      <StudentHeader />
-      <div className="flex flex-1 w-full max-w-[1600px] mx-auto">
-        <StudentSidebar />
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto w-full">
+    <SidebarProvider defaultOpen={true}>
+      <StudentSidebar />
+      <SidebarInset>
+        <StudentHeader />
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
           <Outlet />
         </main>
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 
