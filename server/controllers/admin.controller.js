@@ -5,6 +5,13 @@ const register = async (req, res, next) => {
   try {
     const { email, name, password } = req.body;
 
+    const existingAdmin = await ADMIN.findOne({ email });
+    if (existingAdmin) {
+      const error = new Error("Admin already exists");
+      error.statusCode = 400;
+      return next(error);
+    }
+
     const newAdmin = await ADMIN.create({ name, email, password });
 
     return res.status(201).json({

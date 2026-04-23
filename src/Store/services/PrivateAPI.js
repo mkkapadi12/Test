@@ -8,10 +8,10 @@ const privateAPI = axios.create({
 });
 
 privateAPI.interceptors.request.use((config) => {
-  // Check for admin token first, then user token
   const adminToken = localStorage.getItem("admintestToken");
+  const instructorToken = localStorage.getItem("instructortestToken");
   const userToken = localStorage.getItem("usertestToken");
-  const token = adminToken || userToken;
+  const token = adminToken || instructorToken || userToken;
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

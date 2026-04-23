@@ -28,12 +28,6 @@ const navItems = [
     description: "Overview & metrics",
   },
   {
-    title: "Products",
-    path: "/admin/all-products",
-    icon: Package,
-    description: "Manage catalog",
-  },
-  {
     title: "Courses",
     path: "/admin/all-courses",
     icon: BookOpen,
@@ -66,8 +60,7 @@ const SidebarNav = ({ onNavigate }) => {
         {navItems.map((item) => {
           const isActive =
             location.pathname === item.path ||
-            (item.path !== "/admin" &&
-              location.pathname.startsWith(item.path));
+            (item.path !== "/admin" && location.pathname.startsWith(item.path));
           const Icon = item.icon;
           const badgeCount =
             item.showBadge && pendingRequests?.length > 0
@@ -84,13 +77,13 @@ const SidebarNav = ({ onNavigate }) => {
                     "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                     isActive
                       ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                   )}
                 >
                   <Icon
                     className={cn(
                       "h-4 w-4 shrink-0 transition-transform duration-200",
-                      !isActive && "group-hover:scale-110"
+                      !isActive && "group-hover:scale-110",
                     )}
                   />
                   <span className="flex-1 truncate">{item.title}</span>

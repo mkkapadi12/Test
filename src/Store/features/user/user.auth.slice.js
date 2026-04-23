@@ -4,6 +4,7 @@ import {
   loginUserAPI,
   registerUserAPI,
 } from "./user.auth.api";
+import socket from "../../../socket/socket";
 
 const initialState = {
   user: null,
@@ -72,6 +73,7 @@ const userSlice = createSlice({
       state.user = null;
       state.token = null;
       localStorage.removeItem("usertestToken");
+      socket.disconnect();
     },
   },
   extraReducers: (builder) => {

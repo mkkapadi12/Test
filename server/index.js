@@ -12,6 +12,7 @@ const product_routes = require("./routes/product.routes");
 const order_routes = require("./routes/order.routes");
 const course_routes = require("./routes/course.routes");
 const enrollment_routes = require("./routes/enrollment.routes");
+const instructor_routes = require("./routes/instructor.routes");
 // middleware
 const errorMiddleware = require("./middlewares/error.middleware");
 
@@ -54,6 +55,9 @@ app.use("/api/order", order_routes);
 //course + enrollment
 app.use("/api/courses", course_routes);
 app.use("/api/enrollments", enrollment_routes);
+
+//instructor
+app.use("/api/instructor", instructor_routes);
 
 //error middleware
 app.use(errorMiddleware);

@@ -4,7 +4,6 @@ const { getIO } = require("../socket/socket");
 
 //create course
 const createCourse = asyncHandler(async (req, res, next) => {
-  console.log("controller:", req.body);
   const { title, description, instructor, duration } = req.body;
   if (!title || !description || !instructor || !duration) {
     const error = new Error("All fields are required");

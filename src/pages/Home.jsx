@@ -13,7 +13,7 @@ import { Button } from "../components/ui/button";
 const Home = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 font-sans text-gray-900">
-      <div className="max-w-3xl w-full">
+      <div className="max-w-6xl w-full">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-gray-900">
             Welcome to the Platform
@@ -24,7 +24,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-8">
           <Card className="bg-white border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200">
             <CardHeader className="text-center pb-2 pt-8">
               <div className="mx-auto bg-gray-100 border border-gray-200 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
@@ -70,6 +70,30 @@ const Home = () => {
                 size="lg"
               >
                 <Link to="/admin/login">Login as Admin</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200">
+            <CardHeader className="text-center pb-2 pt-8">
+              <div className="mx-auto bg-gray-100 border border-gray-200 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                <User className="w-8 h-8 text-gray-700" />
+              </div>
+              <CardTitle className="text-2xl text-gray-900">
+                Instructor Portal
+              </CardTitle>
+              <CardDescription className="text-gray-500 mt-2">
+                Manage your courses, students, and earnings.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-center pb-8 pt-4">
+              <Button
+                asChild
+                className="w-full bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 font-medium shadow-sm"
+                variant="outline"
+                size="lg"
+              >
+                <Link to="/instructor/login">Login as Instructor</Link>
               </Button>
             </CardContent>
           </Card>

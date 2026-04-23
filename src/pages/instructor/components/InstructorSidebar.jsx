@@ -2,9 +2,10 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
+  Package,
   BookOpen,
-  GraduationCap,
-  Brain,
+  Users,
+  UserCheck,
   ChevronRight,
   Sparkles,
 } from "lucide-react";
@@ -20,31 +21,13 @@ import { Separator } from "@/components/ui/separator";
 const navItems = [
   {
     title: "Dashboard",
-    path: "/student",
+    path: "/instructor",
     icon: LayoutDashboard,
-    description: "Overview & stats",
-  },
-  {
-    title: "All Courses",
-    path: "/student/all-courses",
-    icon: BookOpen,
-    description: "Browse courses",
-  },
-  {
-    title: "My Enrollments",
-    path: "/student/my-enrollments",
-    icon: GraduationCap,
-    description: "Enrollment history",
-  },
-  {
-    title: "My Learning",
-    path: "/student/learning",
-    icon: Brain,
-    description: "Continue learning",
+    description: "Overview & metrics",
   },
 ];
 
-const SidebarNav = ({ onNavigate }) => {
+const InstructorSidebarNav = ({ onNavigate }) => {
   const location = useLocation();
 
   return (
@@ -53,7 +36,7 @@ const SidebarNav = ({ onNavigate }) => {
         {navItems.map((item) => {
           const isActive =
             location.pathname === item.path ||
-            (item.path !== "/student" &&
+            (item.path !== "/instructor" &&
               location.pathname.startsWith(item.path));
           const Icon = item.icon;
 
@@ -67,16 +50,17 @@ const SidebarNav = ({ onNavigate }) => {
                     "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                     isActive
                       ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                   )}
                 >
                   <Icon
                     className={cn(
                       "h-4 w-4 shrink-0 transition-transform duration-200",
-                      !isActive && "group-hover:scale-110"
+                      !isActive && "group-hover:scale-110",
                     )}
                   />
                   <span className="flex-1 truncate">{item.title}</span>
+
                   {isActive && (
                     <ChevronRight className="ml-auto h-4 w-4 opacity-60" />
                   )}
@@ -96,7 +80,7 @@ const SidebarNav = ({ onNavigate }) => {
   );
 };
 
-const StudentSidebar = () => {
+const InstructorSidebar = () => {
   return (
     <aside className="hidden md:flex md:w-64 lg:w-72 flex-col border-r border-border bg-card h-[calc(100vh-3.5rem)] sticky top-14 shrink-0 overflow-hidden">
       {/* Section Label */}
@@ -108,7 +92,7 @@ const StudentSidebar = () => {
 
       {/* Nav Items */}
       <div className="flex-1 overflow-y-auto">
-        <SidebarNav />
+        <InstructorSidebarNav />
       </div>
 
       <Separator />
@@ -120,8 +104,8 @@ const StudentSidebar = () => {
             <Sparkles className="h-4 w-4 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold truncate">Student Portal</p>
-            <p className="text-[10px] text-muted-foreground">v2.0 • Learner</p>
+            <p className="text-xs font-semibold truncate">Instructor Portal</p>
+            <p className="text-[10px] text-muted-foreground">v1.0 • Pro</p>
           </div>
         </div>
       </div>
@@ -129,5 +113,5 @@ const StudentSidebar = () => {
   );
 };
 
-export { SidebarNav };
-export default StudentSidebar;
+export { InstructorSidebarNav };
+export default InstructorSidebar;

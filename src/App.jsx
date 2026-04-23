@@ -18,12 +18,17 @@ import StudentDashboard from "./pages/student/pages/StudentDashboard";
 import AllCourses from "./pages/student/pages/AllCourses";
 import StudentLayout from "./pages/layout/StudentLayout";
 import AdminCourses from "./pages/admin/pages/AdminCourses";
-import AdminProducts from "./pages/admin/pages/AdminProducts";
 import AdminLayout from "./pages/layout/AdminLayout";
 import MyEnrollments from "./pages/student/pages/MyEnrollments";
 import PendingRequests from "./pages/admin/pages/PendingRequests";
 import AdminEnrollments from "./pages/admin/pages/AdminEnrollments";
 import MyLearning from "./pages/student/pages/MyLearning";
+
+//Instructor routes
+import InstructorLogin from "./pages/instructor/Auth/InstructorLogin";
+import InstructorRegister from "./pages/instructor/Auth/InstructorRegister";
+import InstructorDashboard from "./pages/instructor/pages/InstructorDashboard";
+import InstructorLayout from "./pages/layout/InstructorLayout";
 
 const App = () => {
   return (
@@ -41,7 +46,6 @@ const App = () => {
         {/* admin routes */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
-          <Route path="all-products" element={<AdminProducts />} />
           <Route path="all-courses" element={<AdminCourses />} />
           <Route path="pending-requests" element={<PendingRequests />} />
           <Route path="enrollments" element={<AdminEnrollments />} />
@@ -52,6 +56,13 @@ const App = () => {
           <Route path="all-courses" element={<AllCourses />} />
           <Route path="my-enrollments" element={<MyEnrollments />} />
           <Route path="learning" element={<MyLearning />} />
+        </Route>
+        {/* instructor auth routes */}
+        <Route path="/instructor/login" element={<InstructorLogin />} />
+        <Route path="/instructor/register" element={<InstructorRegister />} />
+        {/* instructor routes */}
+        <Route path="/instructor" element={<InstructorLayout />}>
+          <Route index element={<InstructorDashboard />} />
         </Route>
       </Routes>
     </Router>

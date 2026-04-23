@@ -22,6 +22,12 @@ const initSocket = (httpServer) => {
       console.log("Student joined studentRoom");
     });
 
+    // Instructor joins instructor room (for course notifications)
+    socket.on("joinInstructor", () => {
+      socket.join("instructorRoom");
+      console.log("Instructor joined instructorRoom");
+    });
+
     // Admin joins admin room (for enrollment requests)
     socket.on("joinAdmin", () => {
       socket.join("adminRoom");

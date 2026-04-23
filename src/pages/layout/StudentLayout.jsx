@@ -8,7 +8,6 @@ import { getAllCourses } from "@/Store/features/course/course.slice";
 import socket from "@/socket/socket";
 import { toast } from "sonner";
 import { getMyEnrollments } from "@/Store/features/enrollment/enrollment.slice";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
 const StudentLayout = () => {
   const { user } = useSelector((state) => state.user);
@@ -49,7 +48,7 @@ const StudentLayout = () => {
         dispatch(getMyEnrollments());
       } else {
         toast.error(
-          `Enrollment rejected: ${data.rejectionReason || "Requirements not met"}`,
+          `Enrollment rejected: ${data.rejectionReason || "Requirements not met"}`
         );
         dispatch(getMyEnrollments());
       }
@@ -62,15 +61,17 @@ const StudentLayout = () => {
   }, [user?._id, dispatch]);
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <StudentSidebar />
-      <SidebarInset>
-        <StudentHeader />
-        <main className="flex-1 p-4 md:p-6 lg:p-8">
-          <Outlet />
+    <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
+      <StudentHeader />
+      <div className="flex flex-1">
+        <StudentSidebar />
+        <main className="flex-1 overflow-y-auto">
+          <div className="mx-auto w-full max-w-7xl p-4 md:p-6 lg:p-8">
+            <Outlet />
+          </div>
         </main>
-      </SidebarInset>
-    </SidebarProvider>
+      </div>
+    </div>
   );
 };
 
