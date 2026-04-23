@@ -2,13 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {
-  Plus,
-  Trash2,
-  Package,
-  Upload,
-  LayoutDashboard,
-} from "lucide-react";
+import { Plus, Trash2, Package, Upload, LayoutDashboard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {

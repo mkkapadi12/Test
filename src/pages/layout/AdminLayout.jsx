@@ -34,12 +34,14 @@ const AdminLayout = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
       <AdminHeader />
-      <div className="flex flex-1 w-full mx-auto">
+      <div className="flex flex-1">
         <AdminSidebar />
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-y-auto w-full">
-          <Outlet />
+        <main className="flex-1 overflow-y-auto">
+          <div className="mx-auto w-full max-w-7xl p-4 md:p-6 lg:p-8">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
