@@ -2,21 +2,15 @@ import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import InstructorHeader from "../instructor/components/InstructorHeader";
 import InstructorSidebar from "../instructor/components/InstructorSidebar";
-import { useDispatch } from "react-redux";
 import socket from "@/socket/socket";
-import { getInstructorProfile } from "@/Store/features/instructor/instructor.auth.slice";
 
 const InstructorLayout = () => {
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(getInstructorProfile());
-
     // Instructor joins instructorRoom to receive notifications
     socket.emit("joinInstructor");
 
     return () => {};
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">

@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import StudentSidebar from "../student/components/StudentSidebar";
 import StudentHeader from "../student/components/StudentHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "@/Store/features/user/user.auth.slice";
+
 import { getAllCourses } from "@/Store/features/course/course.slice";
 import socket from "@/socket/socket";
 import { toast } from "sonner";
@@ -14,7 +14,6 @@ const StudentLayout = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserProfile());
     dispatch(getAllCourses());
     dispatch(getMyEnrollments());
   }, []);

@@ -1,14 +1,5 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Package,
-  BookOpen,
-  Users,
-  UserCheck,
-  ChevronRight,
-  Sparkles,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -19,32 +10,39 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useSelector } from "react-redux";
+import { ADMIN_ICONS } from "@/lib/icons/admin.icons";
 
 const navItems = [
   {
     title: "Dashboard",
     path: "/admin",
-    icon: LayoutDashboard,
+    icon: ADMIN_ICONS.LAYOUTDASHBOARD,
     description: "Overview & metrics",
   },
   {
     title: "Courses",
     path: "/admin/all-courses",
-    icon: BookOpen,
+    icon: ADMIN_ICONS.BOOKOPEN,
     description: "Course management",
   },
   {
     title: "Requests",
     path: "/admin/pending-requests",
-    icon: UserCheck,
+    icon: ADMIN_ICONS.USERCHECK,
     description: "Pending approvals",
     showBadge: true,
   },
   {
     title: "Enrollments",
     path: "/admin/enrollments",
-    icon: Users,
+    icon: ADMIN_ICONS.USERS,
     description: "All enrollments",
+  },
+  {
+    title: "Instructors",
+    path: "/admin/instructors",
+    icon: ADMIN_ICONS.GRADUATIONCAP,
+    description: "Instructor management",
   },
 ];
 
@@ -96,7 +94,7 @@ const SidebarNav = ({ onNavigate }) => {
                     </Badge>
                   )}
                   {isActive && (
-                    <ChevronRight className="ml-auto h-4 w-4 opacity-60" />
+                    <ADMIN_ICONS.CHEVRONRIGHT className="ml-auto h-4 w-4 opacity-60" />
                   )}
                 </Link>
               </TooltipTrigger>
@@ -135,7 +133,7 @@ const AdminSidebar = () => {
       <div className="p-4">
         <div className="flex items-center gap-2 rounded-lg bg-muted/50 px-3 py-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-            <Sparkles className="h-4 w-4 text-primary-foreground" />
+            <ADMIN_ICONS.SPARKLES className="h-4 w-4 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold truncate">Admin Portal</p>

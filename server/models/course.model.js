@@ -5,7 +5,11 @@ const courseSchema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    instructor: { type: String, required: true },
+    instructor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Instructor",
+      required: true,
+    },
     duration: { type: String },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
